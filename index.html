@@ -665,20 +665,20 @@
         <div class="form-row">
           <div class="form-group">
             <label for="f-name">Your Name</label>
-            <input type="text" id="f-name" placeholder="John Smith" required />
+            <input type="text" id="f-name" name="name" placeholder="John Smith" required />
           </div>
           <div class="form-group">
             <label for="f-phone">Phone Number</label>
-            <input type="tel" id="f-phone" placeholder="(304) 555-0000" required />
+            <input type="tel" id="f-phone" name="phone" placeholder="(304) 555-0000" required />
           </div>
         </div>
         <div class="form-group">
           <label for="f-email">Email Address</label>
-          <input type="email" id="f-email" placeholder="you@email.com" />
+          <input type="email" id="f-email" name="email" placeholder="you@email.com" />
         </div>
         <div class="form-group">
           <label for="f-service">Service Needed</label>
-          <select id="f-service">
+          <select id="f-service" name="service">
             <option value="">Select a service...</option>
             <option>Troubleshooting &amp; Repairs</option>
             <option>Electrical Service Upgrade</option>
@@ -694,7 +694,7 @@
         </div>
         <div class="form-group">
           <label for="f-msg">Tell Us More</label>
-          <textarea id="f-msg" placeholder="Describe what you need, your location, and any details that might help..."></textarea>
+          <textarea id="f-msg" name="message" placeholder="Describe what you need, your location, and any details that might help..."></textarea>
         </div>
         <button type="submit" class="btn-submit">Request Free Estimate &rarr;</button>
       </form>
