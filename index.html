@@ -230,35 +230,36 @@
     }
     .why-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.55; }
 
-    /* ─── GALLERY ─── */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-    }
-    .gallery-item {
-      aspect-ratio: 4/3; overflow: hidden;
-      background: var(--panel); border: 1px solid var(--border);
-      position: relative; cursor: pointer;
-    }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
-    .gallery-item:hover img { transform: scale(1.04); }
-    .gallery-placeholder {
-      width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 0.5rem; color: var(--soft);
-    }
-    .gallery-placeholder span { font-size: 2rem; }
-    .gallery-placeholder p {
-      font-family: var(--font-condensed); font-size: 0.72rem;
-      letter-spacing: 0.12em; text-transform: uppercase; color: var(--soft);
-    }
-    .gallery-note {
-      margin-top: 1.2rem; text-align: center;
-      font-family: var(--font-condensed); font-size: 0.78rem;
-      letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft);
-    }
-
+   /* ─── GALLERY ─── */
+.slideshow-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; }
+.slideshow {
+  position: relative; width: 100%; max-width: 900px;
+  aspect-ratio: 16/9; overflow: hidden;
+  border: 1px solid var(--border); background: var(--panel);
+}
+.slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
+.slide.active { opacity: 1; }
+.slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.slide-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(8,8,8,0.65); border: 1px solid var(--border);
+  color: var(--gold-bright); font-size: 1.4rem;
+  width: 44px; height: 44px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+  z-index: 10;
+}
+.slide-btn:hover { background: rgba(245,196,0,0.15); }
+.slide-btn.prev { left: 0.75rem; }
+.slide-btn.next { right: 0.75rem; }
+.slide-dots { display: flex; gap: 0.5rem; }
+.dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--border); cursor: pointer;
+  transition: background var(--transition);
+}
+.dot.active { background: var(--gold-bright); }
+  
     /* ─── REVIEWS ─── */
     .reviews-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
@@ -571,26 +572,24 @@
       <h2 class="section-title">Project Gallery</h2>
       <p class="section-sub">A look at some of our recent jobs across Southern West Virginia.</p>
     </div>
-    <div class="gallery-grid reveal">
-      <div class="gallery-item">
-        <div class="gallery-placeholder"><span>&#9889;</span><p>Panel Replacement</p></div>
+
+    <div class="slideshow-wrap reveal">
+      <div class="slideshow">
+        <div class="slide active"><img src="photo1.jpg" alt="Project Photo 1" /></div>
+        <div class="slide"><img src="photo2.jpg" alt="Project Photo 2" /></div>
+        <div class="slide"><img src="photo3.jpg" alt="Project Photo 3" /></div>
+
+        <button class="slide-btn prev" onclick="changeSlide(-1)">&#8592;</button>
+        <button class="slide-btn next" onclick="changeSlide(1)">&#8594;</button>
       </div>
-      <div class="gallery-item">
-        <div class="gallery-placeholder"><span>&#128161;</span><p>Lighting Install</p></div>
-      </div>
-      <div class="gallery-item">
-        <div class="gallery-placeholder"><span>&#127968;</span><p>Generator Install</p></div>
-      </div>
-      <div class="gallery-item">
-        <div class="gallery-placeholder"><span>&#128247;</span><p>Security Cameras</p></div>
-      </div>
-      <div class="gallery-item">
-        <div class="gallery-placeholder"><span>&#128268;</span><p>Generator Inlet</p></div>
-      </div>
-      <div class="gallery-item">
-        <div class="gallery-placeholder"><span>&#128663;</span><p>EV Charger</p></div>
+
+      <div class="slide-dots">
+        <span class="dot active" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+        <span class="dot" onclick="goToSlide(2)"></span>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -751,6 +750,31 @@
       btn.style.color = '';
       e.target.reset();
     }, 4000);
+  }
+   // Slideshow
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  let slideTimer = setInterval(() => changeSlide(1), 4000);
+
+  function goToSlide(n) {
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    currentSlide = (n + slides.length) % slides.length;
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+  }
+
+  function changeSlide(dir) {
+    clearInterval(slideTimer);
+    goToSlide(currentSlide + dir);
+    slideTimer = setInterval(() => changeSlide(1), 4000);
+  }
+
+  const sw = document.querySelector('.slideshow');
+  if (sw) {
+    sw.addEventListener('mouseenter', () => clearInterval(slideTimer));
+    sw.addEventListener('mouseleave', () => { slideTimer = setInterval(() => changeSlide(1), 4000); });
   }
 </script>
 </body>
