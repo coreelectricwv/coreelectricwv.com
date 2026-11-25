@@ -756,7 +756,6 @@
   let currentSlide = 0;
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.dot');
-  let slideTimer = setInterval(() => changeSlide(1), 4000);
 
   function goToSlide(n) {
     slides[currentSlide].classList.remove('active');
@@ -767,16 +766,9 @@
   }
 
   function changeSlide(dir) {
-    clearInterval(slideTimer);
     goToSlide(currentSlide + dir);
-    slideTimer = setInterval(() => changeSlide(1), 4000);
   }
 
-  const sw = document.querySelector('.slideshow');
-  if (sw) {
-    sw.addEventListener('mouseenter', () => clearInterval(slideTimer));
-    sw.addEventListener('mouseleave', () => { slideTimer = setInterval(() => changeSlide(1), 4000); });
-  }
 </script>
 </body>
 </html>
